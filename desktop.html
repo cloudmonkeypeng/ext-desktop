@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>ext-桌面测试</title>
+	<link rel="stylesheet" type="text/css" href="css/desktop.css" />
+	<script type="text/javascript" src="corejs/shared/include-ext.js"></script>
+	<script type="text/javascript" src="corejs/shared/options-toolbar.js"></script>
+    <script type="text/javascript" src="corejs/shared/ext-lang-zh_CN.js"></script>
+
+
+	<script type="text/javascript">
+        Ext.Loader.setPath({
+            'Ext.ux.desktop': 'desktopjs',
+            MyDesktop: 'appjs'
+        });
+
+        Ext.require('MyDesktop.App');
+
+        var myDesktopApp;
+        Ext.onReady(function () {
+            myDesktopApp = new MyDesktop.App();        
+        });
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
