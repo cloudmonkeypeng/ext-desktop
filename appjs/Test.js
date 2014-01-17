@@ -16,9 +16,10 @@
         var win = desktop.getWindow('zhangpeng-test');
         if(!win){
         	win = desktop.createWindow({
-                width:640,
-                height:480,
-                html : '<p>zhangpeng-test is here.</p>',
+                width:1000,
+                height:500,
+                //html : '<frame src="www.baidu.com" scolling="no" noresize="noresize"/>',
+                html:'<iframe src="http://localhost/DataVisual/test/force_directed.html" width="100%" height="100%" scrolling="yes"><iframe>',
                 animCollapse:false,
                 constrainHeader:true
             });
