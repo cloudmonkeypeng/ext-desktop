@@ -5,6 +5,8 @@
  * http://www.sencha.com/license
  */
 
+//读取app
+
 Ext.define('MyDesktop.App', {
     extend: 'Ext.ux.desktop.App',
 

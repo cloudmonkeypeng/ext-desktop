@@ -5,6 +5,9 @@
  * http://www.sencha.com/license
  */
 
+
+ //模拟聊天软件
+
 Ext.define('MyDesktop.AccordionWindow', {
     extend: 'Ext.ux.desktop.Module',
 
@@ -20,7 +23,7 @@ Ext.define('MyDesktop.AccordionWindow', {
     init : function(){
         this.launcher = {
             text: 'Accordion Window',
-            iconCls:'accordion'
+            iconCls:'accordion'   //????
         };
     },
 

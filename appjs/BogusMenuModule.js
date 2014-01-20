@@ -11,7 +11,7 @@ Ext.define('MyDesktop.BogusMenuModule', {
     init : function() {
 
         this.launcher = {
-            text: 'More items',
+            text: 'More items window',
             iconCls: 'bogus',
             handler: function() {
                 return false;
