@@ -12,7 +12,6 @@ Ext.define('MyDesktop.App', {
 
     requires: [
         'Ext.window.MessageBox',
-
         'Ext.ux.desktop.ShortcutModel',
 
         'MyDesktop.SystemStatus',
@@ -23,8 +22,6 @@ Ext.define('MyDesktop.App', {
         'MyDesktop.Notepad',
         'MyDesktop.BogusMenuModule',
         'MyDesktop.BogusModule',
-
-//        'MyDesktop.Blockalanche',
         'MyDesktop.Settings',
         // zp add
         'MyDesktop.Test'
