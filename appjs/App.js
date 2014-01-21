@@ -79,12 +79,27 @@ Ext.define('MyDesktop.App', {
         });
     },
 
+
+
+
     // config for the start menu
     getStartConfig : function() {
         var me = this, ret = me.callParent();
 
+
+        var startMenuTitle;
+
+        Ext.Ajax.request({
+            async:false,
+            url:'data/user.json',
+            success:function(response){
+                var results = Ext.JSON.decode(response.responseText);
+                startMenuTitle = results.userName;
+            }
+        });
+
         return Ext.apply(ret, {
-            title: 'Don Griffin',
+            title: startMenuTitle,
             iconCls: 'user',
             height: 300,
             toolConfig: {

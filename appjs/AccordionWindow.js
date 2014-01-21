@@ -23,7 +23,7 @@ Ext.define('MyDesktop.AccordionWindow', {
     init : function(){
         this.launcher = {
             text: 'Accordion Window',
-            iconCls:'accordion'   //????
+            iconCls:'accordion'   
         };
     },
 
@@ -32,7 +32,7 @@ Ext.define('MyDesktop.AccordionWindow', {
             id:'im-tree',
             title: 'Online Users',
             rootVisible:false,
-            lines:false,
+            lines:true,
             autoScroll:true,
             tools:[{
                 type: 'refresh',
