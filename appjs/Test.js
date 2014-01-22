@@ -2,32 +2,35 @@
 
  	extend: 'Ext.ux.desktop.Module',
 
+    id:null,  
 
-    id:'zhangpeng-test',  
-
-
- 	init : function(){
+    constructor:function(data){
+        this.id = data;
         this.launcher = {
-            text: '在线查控',
+            text: this.id,
             iconCls:'icon-grid'
         };
     },
 
     createWindow: function(){
     	var desktop = this.app.getDesktop();
-        var win = desktop.getWindow('zhangpeng-test');
+        var win = desktop.getWindow(this.id);
         if(!win){
         	win = desktop.createWindow({
                 width:1000,
                 height:500,
                 title:'在线插孔',
                 iconCls:'icon-grid',
-                id:'zhangpeng-test',     //没有id会出现多个
+                id:this.id,     //没有id会出现多个
                 //html : '<frame src="www.baidu.com" scolling="no" noresize="noresize"/>',
-                html:'<iframe src="http://localhost/DataVisual/test/force_directed.html" width="100%" height="100%" scrolling="yes"><iframe>',
+                html:'<iframe src="http://localhost/DataVisual/test/hello_world.html" width="100%" height="100%" scrolling="yes"><iframe>',
+                //html:'<a>13123123</a>',
                 animCollapse:false,
                 constrainHeader:true
             });
+         //    win.show();
+         // }else{
+         //    win.focus;
         }
         win.show();  //不加会少东西。。
         return win;

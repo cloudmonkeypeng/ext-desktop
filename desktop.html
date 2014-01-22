@@ -11,9 +11,17 @@
 
 
 	<script type="text/javascript">
+
+        Ext.Loader.setConfig({
+            disableCaching: false
+        });
+
         Ext.Loader.setPath({
             'Ext.ux.desktop': 'desktopjs',
             MyDesktop: 'appjs'   //类名？
+            // proxy: {
+            //     noCache: false
+            // }
         });
 
         Ext.require('MyDesktop.App');

@@ -27,15 +27,38 @@ Ext.define('MyDesktop.App', {
         'MyDesktop.Test'
     ],
 
+
     init: function() {
         // custom logic before getXYZ methods get called...
+
+        Ext.Ajax.request({
+            async:false,
+            url:'data/app.json',
+            success:function(response){
+            }
+        });
+
 
         this.callParent();
 
         // now ready...
     },
 
+    dataNewModules:null,
+    dataShortCuts:null,
+
     getModules : function(){
+
+        this.dataNewModules = [
+            new MyDesktop.Test('zhangguangliang'),
+            new MyDesktop.Test('zhangpeng')];
+
+        this.dataShortCuts = [
+            { name: '在线查控', iconCls: 'grid-shortcut', module: 'zhangguangliang' },
+            { name: '在线查鹏', iconCls: 'grid-shortcut', module: 'zhangpeng' }];
+        
+        //return this.dataNewModules;
+
         return [
             new MyDesktop.VideoWindow(),
             //new MyDesktop.Blockalanche(),
@@ -46,8 +69,11 @@ Ext.define('MyDesktop.App', {
             new MyDesktop.Notepad(),
             new MyDesktop.BogusMenuModule(),
             new MyDesktop.BogusModule(),
-            new MyDesktop.Test()
+            new MyDesktop.Test(),
+            new MyDesktop.Test('zhangguangliang'),
+            new MyDesktop.Test('zhangpeng')
         ];
+
     },
 
     getDesktopConfig: function () {
@@ -62,13 +88,16 @@ Ext.define('MyDesktop.App', {
 
             shortcuts: Ext.create('Ext.data.Store', {
                 model: 'Ext.ux.desktop.ShortcutModel',
-                data: [
-                    { name: 'Grid Window', iconCls: 'grid-shortcut', module: 'grid-win' },
-                    { name: 'Accordion Window', iconCls: 'accordion-shortcut', module: 'acc-win' },
-                    { name: 'Notepad', iconCls: 'notepad-shortcut', module: 'notepad' },
-                    { name: 'System Status', iconCls: 'cpu-shortcut', module: 'systemstatus'},
-                    { name: '在线查控', iconCls: 'grid-shortcut', module: 'zhangpeng-test' }
-                ]
+                //data: this.dataShortCuts
+                  data: [
+                  { name: 'Grid Window', iconCls: 'grid-shortcut', module: 'grid-win' },
+                  { name: 'Accordion Window', iconCls: 'accordion-shortcut', module: 'acc-win' },
+                  { name: 'Notepad', iconCls: 'notepad-shortcut', module: 'notepad' },
+                  { name: 'System Status', iconCls: 'cpu-shortcut', module: 'systemstatus'},
+                  { name: '在线查控', iconCls: 'grid-shortcut', module: 'zhangguangliang' },
+                  { name: '在线查鹏', iconCls: 'grid-shortcut', module: 'zhangpeng' }
+                  ]
+
             }),
 
             wallpaper: 'wallpapers/Blue-Sencha.jpg',
@@ -125,8 +154,8 @@ Ext.define('MyDesktop.App', {
 
         return Ext.apply(ret, {
             quickStart: [
-                { name: 'Accordion Window', iconCls: 'accordion', module: 'acc-win' },
-                { name: 'Grid Window', iconCls: 'icon-grid', module: 'grid-win' }
+                /*{ name: 'Accordion Window', iconCls: 'accordion', module: 'acc-win' },
+                { name: 'Grid Window', iconCls: 'icon-grid', module: 'grid-win' }*/
             ],
             trayItems: [
                 { xtype: 'trayclock', flex: 1 }
