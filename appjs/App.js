@@ -36,7 +36,7 @@ Ext.define('MyDesktop.App', {
 
         Ext.Ajax.request({
             async:false,
-            url:'data/user.json',
+            url:'data/app.json',
             success:function(response){
                 menuData = Ext.JSON.decode(response.responseText);
             }
@@ -100,9 +100,11 @@ Ext.define('MyDesktop.App', {
 
         var menuData = this.menuData;
 
-        for (var i = 0; i <menu.data.length; i++) {
+        for (var i = 0; i <menuData.length; i++) {
             data.push({
-                name:m
+                name:menuData[i].text,
+                iconCls:menuData[i].icon,
+                module:menuData[i].id+'module'
             })
         };
 

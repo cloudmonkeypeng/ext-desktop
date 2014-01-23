@@ -6,18 +6,19 @@
 
     config:null, 
 
-    constructor:function(data){
+    constructor:function(config){
         var me = this;
         me.id = config.id;
+
         me.config = config;
-        me.callparent(config);
+        me.callParent(config);
     },
 
     init:function(){
         this.launcher ={
-            text:this.config:text,
-            iconCls:this.config.smallIcon
-        }
+            text : this.config.text,
+            iconCls : this.config.smallIcon
+        };
     },
 
     createWindow: function(){
