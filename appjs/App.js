@@ -14,73 +14,99 @@ Ext.define('MyDesktop.App', {
         'Ext.window.MessageBox',
         'Ext.ux.desktop.ShortcutModel',
 
-        'MyDesktop.SystemStatus',
+       /* 'MyDesktop.SystemStatus',
         'MyDesktop.VideoWindow',
         'MyDesktop.GridWindow',
         'MyDesktop.TabWindow',
         'MyDesktop.AccordionWindow',
         'MyDesktop.Notepad',
         'MyDesktop.BogusMenuModule',
-        'MyDesktop.BogusModule',
+        'MyDesktop.BogusModule',*/
         'MyDesktop.Settings',
         // zp add
         'MyDesktop.Test'
     ],
 
+    menuData:null,
 
     init: function() {
         // custom logic before getXYZ methods get called...
 
+        var menuData;
+
         Ext.Ajax.request({
             async:false,
-            url:'data/app.json',
+            url:'data/user.json',
             success:function(response){
+                menuData = Ext.JSON.decode(response.responseText);
             }
         });
 
+        this.menuData = menuData;
 
         this.callParent();
-
         // now ready...
     },
 
-    dataNewModules:null,
-    dataShortCuts:null,
-
     getModules : function(){
 
-        this.dataNewModules = [
-            new MyDesktop.Test('zhangguangliang'),
-            new MyDesktop.Test('zhangpeng')];
+        // this.dataNewModules = [
+        //     new MyDesktop.Test('zhangguangliang'),
+        //     new MyDesktop.Test('zhangpeng')];
 
-        this.dataShortCuts = [
-            { name: '在线查控', iconCls: 'grid-shortcut', module: 'zhangguangliang' },
-            { name: '在线查鹏', iconCls: 'grid-shortcut', module: 'zhangpeng' }];
+        // this.dataShortCuts = [
+        //     { name: '在线查控', iconCls: 'grid-shortcut', module: 'zhangguangliang' },
+        //     { name: '在线查鹏', iconCls: 'grid-shortcut', module: 'zhangpeng' }];
         
-        //return this.dataNewModules;
+        // //return this.dataNewModules;
 
-        return [
-            new MyDesktop.VideoWindow(),
-            //new MyDesktop.Blockalanche(),
-            new MyDesktop.SystemStatus(),
-            new MyDesktop.GridWindow(),
-            new MyDesktop.TabWindow(),
-            new MyDesktop.AccordionWindow(),
-            new MyDesktop.Notepad(),
-            new MyDesktop.BogusMenuModule(),
-            new MyDesktop.BogusModule(),
-            new MyDesktop.Test(),
-            new MyDesktop.Test('zhangguangliang'),
-            new MyDesktop.Test('zhangpeng')
-        ];
+        // return [
+        //     new MyDesktop.VideoWindow(),
+        //     //new MyDesktop.Blockalanche(),
+        //     new MyDesktop.SystemStatus(),
+        //     new MyDesktop.GridWindow(),
+        //     new MyDesktop.TabWindow(),
+        //     new MyDesktop.AccordionWindow(),
+        //     new MyDesktop.Notepad(),
+        //     new MyDesktop.BogusMenuModule(),
+        //     new MyDesktop.BogusModule(),
+        //     new MyDesktop.Test(),
+        //     new MyDesktop.Test('zhangguangliang'),
+        //     new MyDesktop.Test('zhangpeng')
+        // ];
+
+        var modules = [];
+        var menuData = this.menuData;
+
+        for(var i = 0; i<menuData.length;i++){
+            modules.push(
+                new MyDesktop.Test({
+                    text:menuData[i].text,
+                    smallIcon:menuData[i].smallIcon,
+                    id:menuData[i].id+'module',
+                    url:menuData[i].url
+                }));
+        }
+
+        return modules;
 
     },
 
     getDesktopConfig: function () {
         var me = this, ret = me.callParent();
 
+
+        var data=[];
+
+        var menuData = this.menuData;
+
+        for (var i = 0; i <menu.data.length; i++) {
+            data.push({
+                name:m
+            })
+        };
+
         return Ext.apply(ret, {
-            //cls: 'ux-desktop-black',
 
             contextMenuItems: [
                 { text: 'Change Settings', handler: me.onSettings, scope: me }
@@ -89,14 +115,7 @@ Ext.define('MyDesktop.App', {
             shortcuts: Ext.create('Ext.data.Store', {
                 model: 'Ext.ux.desktop.ShortcutModel',
                 //data: this.dataShortCuts
-                  data: [
-                  { name: 'Grid Window', iconCls: 'grid-shortcut', module: 'grid-win' },
-                  { name: 'Accordion Window', iconCls: 'accordion-shortcut', module: 'acc-win' },
-                  { name: 'Notepad', iconCls: 'notepad-shortcut', module: 'notepad' },
-                  { name: 'System Status', iconCls: 'cpu-shortcut', module: 'systemstatus'},
-                  { name: '在线查控', iconCls: 'grid-shortcut', module: 'zhangguangliang' },
-                  { name: '在线查鹏', iconCls: 'grid-shortcut', module: 'zhangpeng' }
-                  ]
+                  data: data
 
             }),
 
