@@ -24,7 +24,7 @@ Ext.define('MyDesktop.App', {
         'MyDesktop.BogusModule',*/
         'MyDesktop.Settings',
         // zp add
-        'MyDesktop.Test'
+        'MyDesktop.WindowFrame'
     ],
 
     menuData:null,
@@ -80,7 +80,7 @@ Ext.define('MyDesktop.App', {
 
         for(var i = 0; i<menuData.length;i++){
             modules.push(
-                new MyDesktop.Test({
+                new MyDesktop.WindowFrame({
                     text:menuData[i].text,
                     smallIcon:menuData[i].smallIcon,
                     id:menuData[i].id+'module',
@@ -111,13 +111,13 @@ Ext.define('MyDesktop.App', {
         return Ext.apply(ret, {
 
             contextMenuItems: [
-                { text: 'Change Settings', handler: me.onSettings, scope: me }
+                { text: '设置桌面背景', handler: me.onSettings, scope: me }
             ],
 
             shortcuts: Ext.create('Ext.data.Store', {
                 model: 'Ext.ux.desktop.ShortcutModel',
                 //data: this.dataShortCuts
-                  data: data
+                data: data
 
             }),
 
@@ -153,7 +153,7 @@ Ext.define('MyDesktop.App', {
                 width: 100,
                 items: [
                     {
-                        text:'Settings',
+                        text:'设置',
                         iconCls:'settings',
                         handler: me.onSettings,
                         scope: me
