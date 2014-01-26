@@ -16538,7 +16538,7 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 
 /* line 49, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-handle-east {
-  width: 20px;
+  width: 6px;
   height: 100%;
   right: 0;
   top: 0;
@@ -16547,14 +16547,14 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 /* line 56, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-handle-south {
   width: 100%;
-  height: 20px;
+  height: 6px;
   left: 0;
   bottom: 0;
 }
 
 /* line 63, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-handle-west {
-  width: 20px;
+  width: 6px;
   height: 100%;
   left: 0;
   top: 0;
@@ -16570,8 +16570,8 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 
 /* line 77, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-handle-southeast {
-  width: 20px;
-  height: 20px;
+  width: 6px;
+  height: 6px;
   right: 0;
   bottom: 0;
   z-index: 101;
@@ -16579,8 +16579,8 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 
 /* line 85, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-handle-northwest {
-  width: 20px;
-  height: 20px;
+  width: 6px;
+  height: 6px;
   left: 0;
   top: 0;
   z-index: 101;
@@ -16597,8 +16597,8 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 
 /* line 101, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-handle-southwest {
-  width: 20px;
-  height: 20px;
+  width: 6px;
+  height: 6px;
   left: 0;
   bottom: 0;
   z-index: 101;
