@@ -1,0 +1,181 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script>
+function number(){
+	var biggest = document.getElementById("number").value;
+	//calculator(biggest);
+	//carry(biggest);
+	huiwen(biggest);
+}
+
+function calculator(biggest){
+
+	var answer = 1;
+	var answerLength = 1;
+	var odd=1;	//奇数
+	var even = 11;	//偶数
+	var oddHalfNum = 1;
+	var evenHalfNum = 10;
+	
+	while(answer<=biggest){
+		
+		print(answer);
+		
+		if ((answer+1).toString().length>answerLength) {
+			// 新的位数开始
+			answer = 1;
+			for(i=0;i<answerLength;i++){
+				answer = answer*10;
+			}
+			answer = answer+1;
+			
+			
+			answerLength++;
+			if (answerLength>2) {
+				if (answerLength%2==1) {
+					odd = odd*10;
+					oddHalfNum = oddHalfNum *10;
+				}else{
+					even = even*10;
+					evenHalfNum = evenHalfNum *10;
+				};
+			};
+			continue;
+		};
+		
+		if (answerLength%2==1) {
+			//不进位加一个数
+			if ((Math.floor(answer/oddHalfNum))%10!=9) {
+				answer = answer +odd;
+			}else{
+				//几位没进位 乘几个0  n代表没进位的位数
+				var n = carry(Math.floor(answer/oddHalfNum));
+				answer = answer+11*Math.pow(10,n);
+			};
+		}else{
+			// 不进位 加一个数
+			if ((Math.floor(answer/evenHalfNum))%10!=9) {
+				answer = answer +even;
+			}else{
+				//几位没进位 乘几个0   n代表没进位的位数
+				var n = carry(Math.floor(answer/evenHalfNum));
+				answer = answer+11*Math.pow(10,n);
+			};
+		};
+	}
+}
+
+function carry(answer){
+	var n = 0;
+	var templength = answer.toString().length;
+	var m = 1;
+	var nextAnswer = parseInt(answer) +1;
+	
+	for (var i=0;i<templength-1;i++) {
+		m = m*10;
+	};
+
+	while(Math.floor(answer/m)==Math.floor(nextAnswer/m)){
+		m = m/10;
+		n++;
+	}
+	
+	return n;
+}
+
+function print(answer){
+	if (answer==101) {
+		alert("12123132");
+	};
+	var o=document.createElement("DIV");
+	o.innerHTML=answer;
+	document.getElementById("result").appendChild(o);
+}
+
+
+function huiwen(max) {
+    var result, start = new Date(), length, i, t = '';
+    if (max < 10) {
+        result = [];
+        for (i = 1; i < max; i++) print(i);
+    } else {
+        result = [1,2,3,4,5,6,7,8,9];
+        max += '';
+        length = max.length;
+        if (length % 2) {
+            f1(max);
+            for (i = 1; i < length; i++) {
+                t += '9'
+            }
+            f2(t);
+        } else {
+            f2(max);
+        }
+
+    }
+    var end = new Date();
+    console.log(end.getTime() - start.getTime());
+
+    function reserve(x) {
+        var i, length = x.length - 1, result = '';
+        for (i = length; i >= 0; i--) {
+            result += x[i];
+        }
+        return result;
+    }
+
+    function f2(x) {
+        var length, i, j, string, oldMax, reserveMax, restring;
+        oldMax = +x;
+
+        length = x.length / 2;
+        x = x.substr(0, length);
+
+        reserveMax = reserve(x);
+        i = +(x + reserveMax);
+        if (i <= oldMax) print(i);
+
+        x = +x;
+        for (i = 1; i < x; i++) {
+            string = i + '';
+            restring = reserve(string);
+            if (string.length < length) {
+                for (j = 0; j < 10; j++) print(string + j + restring);
+            }
+            print(i + restring);
+        }
+    }
+
+    function f1(max) {
+        var length, i, reserveMax, oldMax, string, j, restring;
+        oldMax = +max;
+
+        length = Math.floor(max.length / 2);
+        mid = +max[length];
+        max = max.substr(0, length);
+
+        reserveMax = reserve(max);
+        for (i = 0; i < mid; i++) {
+            print(max + i + reserveMax);
+        }
+        i = +(max + mid + reserveMax);
+        if (i <= oldMax) print(i);
+
+        max = +max;
+        for (i = 1; i < max; i++) {
+            string = i + '';
+            restring = reserve(string);
+            for (j = 0; j < 10; j++) print(string + j + restring);
+        }
+    }
+}
+</script>
+	
+</head>
+<body>
+	<input type="text" id="number" />
+	<input type="button" value="输出对称数" onclick="number()">
+	<div id="result"></div>
+</body>
+</html>
