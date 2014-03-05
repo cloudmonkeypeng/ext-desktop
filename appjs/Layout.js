@@ -1,68 +1,44 @@
-Ext.require(['Ext.ux.IFrame']);
+Ext.require(['Ext.ux.IFrame','Ext.ux.CommonGrid','Ext.ux.CommonPagingToolbar']);
 
 
 Ext.onReady(function() {
 
-    Ext.define('Company', {
+    
+    Ext.define('ForumThread', {
         extend: 'Ext.data.Model',
         fields: [
-            {name: 'company'},
-            {name: 'price', type: 'float'},
-            {name: 'change', type: 'float'},
-            {name: 'pctChange', type: 'float'},
-            {name: 'lastChange', type: 'date', dateFormat: 'n/j h:ia'},
-            {name: 'industry'},
-            {name: 'desc'}
-         ]
+            'title', 'forumtitle', 'forumid', 'username',
+            {name: 'replycount', type: 'int'},
+            {name: 'lastpost', mapping: 'lastpost', type: 'date', dateFormat: 'timestamp'},
+            'lastposter', 'excerpt', 'threadid'
+        ],
+        idProperty: 'threadid'
     });
 
-    Ext.grid.dummyData = [
-        ['3m Co',71.72,0.02,0.03,'9/1 12:00am', 'Manufacturing'],
-        ['Alcoa Inc',29.01,0.42,1.47,'9/1 12:00am', 'Manufacturing'],
-        ['Altria Group Inc',83.81,0.28,0.34,'9/1 12:00am', 'Manufacturing'],
-        ['American Express Company',52.55,0.01,0.02,'9/1 12:00am', 'Finance'],
-        ['American International Group, Inc.',64.13,0.31,0.49,'9/1 12:00am', 'Services'],
-        ['AT&T Inc.',31.61,-0.48,-1.54,'9/1 12:00am', 'Services'],
-        ['Boeing Co.',75.43,0.53,0.71,'9/1 12:00am', 'Manufacturing'],
-        ['Caterpillar Inc.',67.27,0.92,1.39,'9/1 12:00am', 'Services'],
-        ['Citigroup, Inc.',49.37,0.02,0.04,'9/1 12:00am', 'Finance'],
-        ['E.I. du Pont de Nemours and Company',40.48,0.51,1.28,'9/1 12:00am', 'Manufacturing'],
-        ['Exxon Mobil Corp',68.1,-0.43,-0.64,'9/1 12:00am', 'Manufacturing'],
-        ['General Electric Company',34.14,-0.08,-0.23,'9/1 12:00am', 'Manufacturing'],
-        ['General Motors Corporation',30.27,1.09,3.74,'9/1 12:00am', 'Automotive'],
-        ['Hewlett-Packard Co.',36.53,-0.03,-0.08,'9/1 12:00am', 'Computer'],
-        ['Honeywell Intl Inc',38.77,0.05,0.13,'9/1 12:00am', 'Manufacturing'],
-        ['Intel Corporation',19.88,0.31,1.58,'9/1 12:00am', 'Computer'],
-        ['International Business Machines',81.41,0.44,0.54,'9/1 12:00am', 'Computer'],
-        ['Johnson & Johnson',64.72,0.06,0.09,'9/1 12:00am', 'Medical'],
-        ['JP Morgan & Chase & Co',45.73,0.07,0.15,'9/1 12:00am', 'Finance'],
-        ['McDonald\'s Corporation',36.76,0.86,2.40,'9/1 12:00am', 'Food'],
-        ['Merck & Co., Inc.',40.96,0.41,1.01,'9/1 12:00am', 'Medical'],
-        ['Microsoft Corporation',25.84,0.14,0.54,'9/1 12:00am', 'Computer'],
-        ['Pfizer Inc',27.96,0.4,1.45,'9/1 12:00am', 'Medical'],
-        ['The Coca-Cola Company',45.07,0.26,0.58,'9/1 12:00am', 'Food'],
-        ['The Home Depot, Inc.',34.64,0.35,1.02,'9/1 12:00am', 'Retail'],
-        ['The Procter & Gamble Company',61.91,0.01,0.02,'9/1 12:00am', 'Manufacturing'],
-        ['United Technologies Corporation',63.26,0.55,0.88,'9/1 12:00am', 'Computer'],
-        ['Verizon Communications',35.57,0.39,1.11,'9/1 12:00am', 'Services'],
-        ['Wal-Mart Stores, Inc.',45.45,0.73,1.63,'9/1 12:00am', 'Retail'],
-        ['Walt Disney Company (The) (Holding Company)',29.89,0.24,0.81,'9/1 12:00am', 'Services']
-    ];
-
- // add in some dummy descriptions
-    for(var i = 0; i < Ext.grid.dummyData.length; i++){
-        Ext.grid.dummyData[i].push('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. ');
-    }
 
 
-    Ext.QuickTips.init();
+    var store = Ext.create('Ext.data.Store', {
+        pageSize: 100,
+        model: 'ForumThread',
+        remoteSort: true,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'jsonp',
+            url: 'http://www.sencha.com/forum/topics-browse-remote.php',
+            reader: {
+                root: 'topics',
+                totalProperty: 'totalCount'
+            },
+            // sends single sort as multi parameter
+            simpleSortMode: true
+        },
+        sorters: [{
+            property: 'lastpost',
+            direction: 'DESC'
+        }]
+    });
 
-    var getLocalStore = function() {
-        return Ext.create('Ext.data.ArrayStore', {
-            model: 'Company',
-            data: Ext.grid.dummyData
-        });
-    };
 
     var modelStore = Ext.create('Ext.data.TreeStore', {
         root: {
@@ -107,61 +83,63 @@ Ext.onReady(function() {
         listeners:{
             itemclick :function(view,re){
                 if (re.data.leaf === true) {
-                    var tab = Ext.create('Ext.ux.IFrame',{
-                        xtype:'uxiframe',
-                        title:re.data.text,
-                        closable:true,
-                        layout:'fit',
-                        autoScroll:true,
-                        src:'http://www.sohu.com'
+                    // var tab = Ext.create('Ext.ux.IFrame',{
+                    //     xtype:'uxiframe',
+                    //     title:re.data.text,
+                    //     closable:true,
+                    //     layout:'fit',
+                    //     autoScroll:true,
+                    //     src:'http://www.sohu.com'
+                    // });
+
+                    var pageBar = Ext.create('Ext.ux.CommonPagingToolbar', {
+                        store: store
                     });
 
-                    var grid3 = Ext.create('Ext.grid.Panel', {
-                        store: getLocalStore(),
-                        columns: [
-                            Ext.create('Ext.grid.RowNumberer'),
-                            {text: "Company", flex: 1, sortable: true, dataIndex: 'company'},
-                            {text: "Price", width: 120, sortable: true, renderer: Ext.util.Format.usMoney, dataIndex: 'price'},
-                            {text: "Change", width: 120, sortable: true, dataIndex: 'change'},
-                            {text: "% Change", width: 120, sortable: true, dataIndex: 'pctChange'},
-                            {text: "Last Updated", width: 120, sortable: true, renderer: Ext.util.Format.dateRenderer('m/d/Y'), dataIndex: 'lastChange'}
-                        ],
-                        columnLines: true,
+                    columns = [
+                         Ext.create('Ext.grid.RowNumberer',{
+                            width:50
+                         }),
+                         {
+                            // id assigned so we can apply custom css (e.g. .x-grid-cell-topic b { color:#333 })
+                            // TODO: This poses an issue in subclasses of Grid now because Headers are now Components
+                            // therefore the id will be registered in the ComponentManager and conflict. Need a way to
+                            // add additional CSS classes to the rendered cells.
+                            id: 'topic',
+                            text: "Topic",
+                            dataIndex: 'title',
+                            flex: 1,
+                            //renderer: renderTopic,
+                            sortable: false
+                        },{
+                            text: "Author",
+                            dataIndex: 'username',
+                            width: 100,
+                            //hidden: true,
+                            sortable: true
+                        },{
+                            text: "Replies",
+                            dataIndex: 'replycount',
+                            width: 70,
+                            align: 'right',
+                            sortable: true
+                        },{
+                            id: 'last',
+                            text: "Last Post",
+                            dataIndex: 'lastpost',
+                            width: 150,
+                            //renderer: renderLast,
+                            sortable: true
+                        }];
+
+                    var grid3 = Ext.create('Ext.ux.CommonGrid', {
+                        store: store,
+                        columns: columns,
                         title:'Grid with Numbered Rows',
-                        closable:true,
-                        layout:'fit',
-                        autoScroll:true,
-                        dockedItems: [{
-                            dock: 'top',
-                            xtype: 'toolbar',
-                            items:[{
-                                xtype: 'button',
-                                text: '打开',
-                                handler:function(){
-
-                                }
-                            }]
-                        }],
-                        bbar: Ext.create('Ext.PagingToolbar', {
-                            store: getLocalStore(),
-                            displayInfo: true,
-                            displayMsg: 'Displaying topics {0} - {1} of {2}',
-                            emptyMsg: "No topics to display",
-                            items:[
-                                '-', {
-                                text: 'Show Preview',
-                                pressed: true,
-                                enableToggle: true,
-                                toggleHandler: function(btn, pressed) {
-                                    var preview = Ext.getCmp('gv').getPlugin('preview');
-                                    preview.toggleExpanded(pressed);
-                                }
-                            }]
-                        }),
+                        bbar:pageBar
                     });
-
+                    store.loadPage(1);
                     tabPage.add(grid3).show();
-                  
                 };
             }
         }
